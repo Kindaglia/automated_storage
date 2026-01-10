@@ -6,7 +6,7 @@
 
 ## Features
 
-- **Massive Storage:** 108 slots (9 columns x 12 rows) of storage space in a single block.
+- **Massive Storage:** 1000 slots of storage space in a single block.
 - **Integrated Search:** Built-in search bar to instantly filter and find items within the chest.
 - **Scrollable Interface:** Custom UI with a scrollbar to easily navigate the large inventory without cluttering the screen.
 - **Smart Filtering:** 
