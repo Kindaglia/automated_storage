@@ -121,3 +121,74 @@ end)
 minetest.register_on_leaveplayer(function(player)
     automated_chest.player_search_state[player:get_player_name()] = nil
 end)
+
+-- Sort the inventory
+function automated_chest.sort_inventory(pos)
+    local meta = minetest.get_meta(pos)
+    local inv = meta:get_inventory()
+    local size = inv:get_size("main")
+    local items = {}
+
+    -- Collect all items
+    for i = 1, size do
+        local stack = inv:get_stack("main", i)
+        if not stack:is_empty() then
+            table.insert(items, stack)
+        end
+    end
+
+    -- Clear inventory
+    inv:set_list("main", {})
+
+    -- Stack items logically
+    -- We can just add them back to the inventory one by one using add_item,
+    -- which handles stacking automatically. However, we want them sorted first.
+    -- To sort *and* stack, we should probably consolidate first.
+
+    local consolidated = {}
+    for _, stack in ipairs(items) do
+        local name = stack:get_name()
+        if not consolidated[name] then
+            consolidated[name] = stack
+        else
+            -- Check if compatible (metadata, etc - simple check for now)
+            if consolidated[name]:get_free_space() > 0 then
+                -- This is a simple merge. A more robust one might be needed for intricate metadata.
+                -- For now, let's just use a temporary inventory to stack everything cleanly.
+                local temp_inv = minetest.create_detached_inventory("temp_sorter", {
+                    allow_move = function() return 0 end,
+                    allow_put = function() return 0 end,
+                    allow_take = function() return 0 end,
+                })
+                temp_inv:set_size("main", size)
+                temp_inv:add_item("main", consolidated[name])
+                temp_inv:add_item("main", stack)
+                -- Re-read the stack(s) - might be split if max stack size reached
+                local list = temp_inv:get_list("main")
+                consolidated[name] = list[1] -- Keep the first full/partial stack
+                -- If there are leftovers (overflow), we need to handle them.
+                -- A simple consolidated table isn't enough for overflows.
+            end
+        end
+    end
+
+    -- Simpler approach:
+    -- 1. Create a list of all itemstrings.
+    -- 2. Sort the list by name.
+    -- 3. Clear inventory.
+    -- 4. Add items back in sorted order. Minetest's add_item handles stacking.
+
+    table.sort(items, function(a, b)
+        local name_a = a:get_name()
+        local name_b = b:get_name()
+        if name_a == name_b then
+            return a:get_count() > b:get_count() -- Sort same items by count descending
+        end
+        return name_a < name_b
+    end)
+
+    -- Re-populate
+    for _, stack in ipairs(items) do
+        inv:add_item("main", stack)
+    end
+end

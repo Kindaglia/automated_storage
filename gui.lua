@@ -65,6 +65,9 @@ function automated_chest.show_chest_formspec(player, pos, query)
         "field[", (width - 4 - padding), ",", 0.1, ";4,0.6;search;;", F(query or ""), "]",
         "field_close_on_enter[search;false]",
 
+        -- Sort Button
+        "button[", (width - 5.5 - padding), ",", 0.1, ";1.4,0.6;sort;", F(S("Sort")), "]",
+
         -- Scroll Container
         "scroll_container[", inv_x, ",", inv_y, ";", (cols * slot_size), ",", scroll_height, ";scroll;vertical;1.25]",
         -- Content
@@ -105,5 +108,11 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
     if fields.search or (fields.key_enter_field == "search") then
         local query = fields.search or ""
         automated_chest.show_chest_formspec(player, state.pos, query)
+    end
+
+    -- Handle Sort
+    if fields.sort then
+        automated_chest.sort_inventory(state.pos)
+        automated_chest.show_chest_formspec(player, state.pos, state.query)
     end
 end)
