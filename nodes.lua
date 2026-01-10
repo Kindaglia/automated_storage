@@ -17,7 +17,7 @@ minetest.register_node("automated_chest:chest", {
     on_construct = function(pos)
         local meta = minetest.get_meta(pos)
         local inv = meta:get_inventory()
-        inv:set_size("main", 9 * 12)    -- 108 slots
+        inv:set_size("main", 1000)      -- 1000 slots
         meta:set_string("formspec", "") -- Clear formspec to force manual show
     end,
 
@@ -43,15 +43,15 @@ minetest.register_node("automated_chest:chest", {
 })
 
 minetest.register_lbm({
-    label = "Upgrade automated chests to 108 slots",
-    name = "automated_chest:upgrade_v3",
+    label = "Upgrade automated chests to 1000 slots",
+    name = "automated_chest:upgrade_v6",
     nodenames = { "automated_chest:chest" },
     run_at_every_load = true,
     action = function(pos, node)
         local meta = minetest.get_meta(pos)
         local inv = meta:get_inventory()
-        if inv:get_size("main") ~= 108 then
-            inv:set_size("main", 108)
+        if inv:get_size("main") ~= 1000 then
+            inv:set_size("main", 1000)
         end
         -- Remove static formspec to enable dynamic one
         meta:set_string("formspec", "")

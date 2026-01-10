@@ -20,8 +20,13 @@ function automated_chest.show_chest_formspec(player, pos, query)
     local list_name = "nodemeta:" .. spos
     local list_loc = list_name
 
+    -- Get actual inventory size
+    local node_meta = minetest.get_meta(pos)
+    local inv = node_meta:get_inventory()
+    local inv_size = inv:get_size("main")
+
     -- Calculate rows
-    local rows_total = 12
+    local rows_total = math.ceil(inv_size / 9)
     if is_filtered then
         local size = automated_chest.update_filtered_view(player, pos, query)
         rows_total = math.ceil(size / 9)
