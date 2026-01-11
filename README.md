@@ -2,7 +2,7 @@
 
 **Automated Chest** is a Mineclonia-compatible mod that adds a high-capacity storage block with advanced inventory management features.
 
-![Automated Chest Interface](textures/mcl_chests_chest_front.png)
+![Automated Chest Interface](textures/automated_storage_front.png)
 
 ## Features
 
