@@ -41,15 +41,49 @@ local function consume_craft_materials(pos)
     update_craft_result(pos)
 end
 
+-- Simple Automated Chest (Storage Only)
 minetest.register_node("automated_chest:chest", {
     description = S("Automated Chest"),
     tiles = {
-        "mcl_chests_chest_top.png",
-        "mcl_chests_chest_top.png",
-        "mcl_chests_chest_side.png",
-        "mcl_chests_chest_side.png",
-        "mcl_chests_chest_side.png",
-        "mcl_chests_chest_front.png"
+        "automated_storage_top.png",
+        "automated_storage_top.png",
+        "automated_storage_side.png",
+        "automated_storage_side.png",
+        "automated_storage_side.png",
+        "automated_storage_front.png"
+    },
+    paramtype2 = "facedir",
+    groups = { pickaxey = 1, container = 2, material_wood = 1, flammable = 1, axey = 1 },
+    sounds = mcl_sounds.node_sound_wood_defaults(),
+
+    on_construct = function(pos)
+        local meta = minetest.get_meta(pos)
+        local inv = meta:get_inventory()
+        inv:set_size("main", 1000)      -- 1000 slots
+        meta:set_string("formspec", "") -- Clear formspec to force manual show
+    end,
+
+    can_dig = function(pos, player)
+        local meta = minetest.get_meta(pos)
+        local inv = meta:get_inventory()
+        return inv:is_empty("main")
+    end,
+
+    on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
+        automated_chest.show_chest_formspec(clicker, pos, "")
+    end,
+})
+
+-- Automated Crafting Chest (Storage + Crafting)
+minetest.register_node("automated_chest:chest_crafting", {
+    description = S("Automated Crafting Chest"),
+    tiles = {
+        "automated_storage_craft_top.png",
+        "automated_storage_craft_top.png",
+        "automated_storage_craft_side.png",
+        "automated_storage_craft_side.png",
+        "automated_storage_craft_side.png",
+        "automated_storage_craft_front.png"
     },
     paramtype2 = "facedir",
     groups = { pickaxey = 1, container = 2, material_wood = 1, flammable = 1, axey = 1 },
@@ -109,10 +143,11 @@ minetest.register_node("automated_chest:chest", {
         end
     end,
 })
+
 minetest.register_lbm({
     label = "Upgrade automated chests to 1000 slots",
     name = "automated_chest:upgrade_v6",
-    nodenames = { "automated_chest:chest" },
+    nodenames = { "automated_chest:chest", "automated_chest:chest_crafting" },
     run_at_every_load = true,
     action = function(pos, node)
         local meta = minetest.get_meta(pos)
@@ -120,11 +155,15 @@ minetest.register_lbm({
         if inv:get_size("main") ~= 1000 then
             inv:set_size("main", 1000)
         end
-        if inv:get_size("craft") ~= 9 then
-            inv:set_size("craft", 9)
-        end
-        if inv:get_size("craftresult") ~= 1 then
-            inv:set_size("craftresult", 1)
+
+        -- Ensure crafting grid exists for crafting chest
+        if node.name == "automated_chest:chest_crafting" then
+            if inv:get_size("craft") ~= 9 then
+                inv:set_size("craft", 9)
+            end
+            if inv:get_size("craftresult") ~= 1 then
+                inv:set_size("craftresult", 1)
+            end
         end
         -- Remove static formspec to enable dynamic one
         meta:set_string("formspec", "")
