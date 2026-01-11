@@ -98,19 +98,35 @@ function automated_chest.show_chest_formspec(player, pos, query)
 
         -- Search Bar (Aligned with Craft Grid)
 
-        "field[", craft_x, ",", 0.1, ";4.0,0.6;search;;", F(query or ""), "]",
+
+
+        "field[", 8.25, ",", 0.1, ";4.0,0.6;search;;", F(query or ""), "]",
+
+
 
         "field_close_on_enter[search;false]",
 
 
 
-        -- Sort Button (Right Aligned)
 
-        "button[", (width - 1.75 - padding), ",", 0.1, ";1.75,0.6;sort;", F(S("Sort")), "]",
+
+
+
+        -- Sort Button (Right of Label)
+
+
+
+        "button[", 6.0, ",", 0.1, ";1.75,0.6;sort;", F(S("Sort")), "]",
+
+
+
+
 
 
 
         -- Scroll Container
+
+
 
         "scroll_container[", inv_x, ",", inv_y, ";", (cols * slot_size), ",", scroll_height, ";scroll;vertical;1.25]",
 
