@@ -1,3 +1,0 @@
-fsc
-mcl_books
-mcl_crafting_table
