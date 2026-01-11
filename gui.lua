@@ -160,10 +160,6 @@ function automated_chest.show_chest_formspec(player, pos, query)
         -- Arrow
         "image[", arrow_x, ",", arrow_y, ";1,1;gui_crafting_arrow.png]",
 
-        -- Refill Button
-        "image_button[", arrow_x, ",", (arrow_y + 1.25), ";1,1;mcl_crafting_table_inv_fill.png;refill;]",
-        "tooltip[refill;", F(S("Refill from Chest")), "]",
-
         -- Craft Result
         mcl_formspec.get_itemslot_bg_v4(result_x, result_y, 1, 1),
         "list[nodemeta:", spos, ";craftresult;", result_x, ",", result_y, ";1,1;]",
@@ -213,11 +209,5 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
         if mcl_craftguide and mcl_craftguide.show then
             mcl_craftguide.show(player:get_player_name())
         end
-    end
-
-    -- Handle Refill
-    if fields.refill then
-        automated_chest.refill_craft_grid(state.pos)
-        automated_chest.show_chest_formspec(player, state.pos, state.query)
     end
 end)
