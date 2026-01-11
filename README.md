@@ -2,7 +2,7 @@
 
 **Automated Chest** is a Mineclonia-compatible mod that adds a high-capacity storage block with advanced inventory management features.
 
-![Automated Chest Interface](textures/mcl_chests_chest_front.png)
+![Automated Chest Interface](textures/automated_storage_front.png)
 
 ## Features
 
@@ -42,10 +42,15 @@ The Automated Chest is crafted using a standard chest surrounded by wood.
 4. **Search:** Type in the search bar at the top right to filter items by name or description.
    - The view will automatically update to show only matching items.
    - You can take items directly from the search results.
+5. **Sort:** Click the "Sort" button to automatically stack and alphabetize the items in the chest.
 
 ## Configuration
 
-The mod includes an LBM (Loading Block Modifier) that automatically upgrades older versions of the chest to the full 108-slot capacity upon loading the area.
+The mod includes an LBM (Loading Block Modifier) that automatically upgrades older versions of the chest to the latest capacity upon loading the area.
+
+## Development
+
+For information on the code structure and how to extend this mod, see [DEVELOPMENT](DEVELOPMENT.md).
 
 ## License
 
