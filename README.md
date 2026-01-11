@@ -7,10 +7,9 @@
 ## Features
 
 - **Massive Storage:** 1000 slots of storage space in a single block.
-- **Integrated Search:** Built-in search bar to instantly filter and find items within the chest.
+- **Integrated Search:** Built-in search bar to filter and find items within the chest.
 - **Scrollable Interface:** Custom UI with a scrollbar to easily navigate the large inventory without cluttering the screen.
 - **Smart Filtering:** 
-  - Filtering happens in real-time.
   - Items can be withdrawn directly from the filtered view.
   - Adding items in filtered view attempts to place them into the chest's main inventory.
 - **Mineclonia Integration:** Fully compatible with `mcl_core`, `mcl_formspec`, and `mcl_sounds`.
@@ -39,8 +38,8 @@ The Automated Chest is crafted using a standard chest surrounded by wood.
 1. **Place** the Automated Chest.
 2. **Right-click** to open the interface.
 3. **Store Items:** Drag and drop items into the scrollable grid.
-4. **Search:** Type in the search bar at the top right to filter items by name or description.
-   - The view will automatically update to show only matching items.
+4. **Search:** Type in the search bar at the top right and press Enter to filter items by name or description.
+   - The view will update to show only matching items.
    - You can take items directly from the search results.
 5. **Sort:** Click the "Sort" button to automatically stack and alphabetize the items in the chest.
 
@@ -52,6 +51,7 @@ The mod includes an LBM (Loading Block Modifier) that automatically upgrades old
 
 For information on the code structure and how to extend this mod, see [DEVELOPMENT](DEVELOPMENT.md).
 
-## License
+## Author
 
-(Check the project root for license details if available)
+- **Kindaglia** - [https://github.com/Kindaglia](https://github.com/Kindaglia)
+

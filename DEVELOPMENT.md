@@ -27,7 +27,7 @@ The chest uses a standard Minetest inventory size set to 1000 slots. While not t
 
 ### Search and Filtering
 Filtering is achieved using **Detached Inventories**.
-1.  When a user types a query, `get_filtered_items` scans the real node inventory.
+1.  When a user enters a query, `get_filtered_items` scans the real node inventory.
 2.  Matching items are copied to a temporary detached inventory unique to that player (`automated_chest_filter_<playername>`).
 3.  The Formspec is updated to display this detached inventory instead of the node's inventory.
 4.  **Interaction:** Callbacks in `init_player_detached_inv` intercept `on_take` and `on_put` events in the detached inventory and proxy them to the real node inventory, ensuring data consistency.
