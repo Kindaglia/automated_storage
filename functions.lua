@@ -122,6 +122,30 @@ minetest.register_on_leaveplayer(function(player)
     automated_chest.player_search_state[player:get_player_name()] = nil
 end)
 
+-- Refill crafting grid from chest inventory
+function automated_chest.refill_craft_grid(pos)
+    local meta = minetest.get_meta(pos)
+    local inv = meta:get_inventory()
+
+    for i = 1, 9 do
+        local stack = inv:get_stack("craft", i)
+        if not stack:is_empty() then
+            local name = stack:get_name()
+            local free_space = stack:get_free_space()
+
+            if free_space > 0 then
+                local to_take = ItemStack(name .. " " .. free_space)
+                local taken = inv:remove_item("main", to_take)
+
+                if not taken:is_empty() then
+                    stack:add_item(taken)
+                    inv:set_stack("craft", i, stack)
+                end
+            end
+        end
+    end
+end
+
 -- Sort the inventory
 function automated_chest.sort_inventory(pos)
     local meta = minetest.get_meta(pos)
