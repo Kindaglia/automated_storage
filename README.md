@@ -14,6 +14,14 @@
   - Adding items in filtered view attempts to place them into the chest's main inventory.
 - **Mineclonia Integration:** Fully compatible with `mcl_core`, `mcl_formspec`, and `mcl_sounds`.
 
+## Screenshots
+
+![Example 1](img/example01.png)
+![Example 2](img/example02.png)
+![Example 3](img/example03.png)
+![Example 4](img/example04.png)
+![Example 5](img/example05.png)
+
 ## Technical Details
 
 - **Node Name:** `automated_chest:chest`
