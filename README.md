@@ -2,7 +2,7 @@
 
 **Automated Chest** is a Mineclonia-compatible mod that adds a high-capacity storage block with advanced inventory management features.
 
-![Automated Chest Interface](textures/automated_storage_front.png)
+![Automated Chest Interface](https://github.com/Kindaglia/automated_storage/blob/main/textures/automated_storage_front.png)
 
 ## Features
 
@@ -16,11 +16,11 @@
 
 ## Screenshots
 
-![Example 1](img/example01.png)
-![Example 2](img/example02.png)
-![Example 3](img/example03.png)
-![Example 4](img/example04.png)
-![Example 5](img/example05.png)
+![Example 1](https://github.com/Kindaglia/automated_storage/blob/main/img/example01.png)
+![Example 2](https://github.com/Kindaglia/automated_storage/blob/main/img/example02.png)
+![Example 3](https://github.com/Kindaglia/automated_storage/blob/main/img/example03.png)
+![Example 4](https://github.com/Kindaglia/automated_storage/blob/main/img/example04.png)
+![Example 5](https://github.com/Kindaglia/automated_storage/blob/main/img/example05.png)
 
 ## Technical Details
 
@@ -57,7 +57,7 @@ The mod includes an LBM (Loading Block Modifier) that automatically upgrades old
 
 ## Development
 
-For information on the code structure and how to extend this mod, see [DEVELOPMENT](DEVELOPMENT.md).
+For information on the code structure and how to extend this mod, see [DEVELOPMENT](https://github.com/Kindaglia/automated_storage/blob/main/DEVELOPMENT.md).
 
 ## Author
 
