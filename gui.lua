@@ -1,5 +1,5 @@
-local S = minetest.get_translator("automated_chest")
-local F = minetest.formspec_escape
+local S = core.get_translator("automated_chest")
+local F = core.formspec_escape
 
 function automated_chest.show_chest_formspec(player, pos, query)
     local player_name = player:get_player_name()
@@ -21,11 +21,11 @@ function automated_chest.show_chest_formspec(player, pos, query)
     local list_loc = list_name
 
     -- Get node type
-    local node_name = minetest.get_node(pos).name
+    local node_name = core.get_node(pos).name
     local is_crafting_chest = (node_name == "automated_chest:chest_crafting")
 
     -- Get actual inventory size
-    local node_meta = minetest.get_meta(pos)
+    local node_meta = core.get_meta(pos)
     local inv = node_meta:get_inventory()
     local inv_size = inv:get_size("main")
 
@@ -212,10 +212,10 @@ function automated_chest.show_chest_formspec(player, pos, query)
     end
 
     local formspec = table.concat(formspec_table)
-    minetest.show_formspec(player_name, "automated_chest:chest_fs", formspec)
+    core.show_formspec(player_name, "automated_chest:chest_fs", formspec)
 end
 
-minetest.register_on_player_receive_fields(function(player, formname, fields)
+core.register_on_player_receive_fields(function(player, formname, fields)
     if formname ~= "automated_chest:chest_fs" then return end
 
     local state = automated_chest.player_search_state[player:get_player_name()]
