@@ -1,11 +1,11 @@
-local S = minetest.get_translator("automated_chest")
+local S = core.get_translator("automated_chest")
 
 local function update_craft_result(pos)
-    local meta = minetest.get_meta(pos)
+    local meta = core.get_meta(pos)
     local inv = meta:get_inventory()
     local craft_list = inv:get_list("craft")
 
-    local result, decremented_input = minetest.get_craft_result({
+    local result, decremented_input = core.get_craft_result({
         method = "normal",
         width = 3,
         items = craft_list
@@ -14,12 +14,12 @@ local function update_craft_result(pos)
 end
 
 local function consume_craft_materials(pos)
-    local meta = minetest.get_meta(pos)
+    local meta = core.get_meta(pos)
     local inv = meta:get_inventory()
     local craft_list = inv:get_list("craft")
 
     -- Consume items
-    local result, decremented_input = minetest.get_craft_result({
+    local result, decremented_input = core.get_craft_result({
         method = "normal",
         width = 3,
         items = craft_list
@@ -33,7 +33,7 @@ local function consume_craft_materials(pos)
             if inv:room_for_item("main", item) then
                 inv:add_item("main", item)
             else
-                minetest.add_item(pos, item)
+                core.add_item(pos, item)
             end
         end
     end
@@ -42,7 +42,7 @@ local function consume_craft_materials(pos)
 end
 
 -- Simple Automated Chest (Storage Only)
-minetest.register_node("automated_chest:chest", {
+core.register_node("automated_chest:chest", {
     description = S("Automated Chest"),
     tiles = {
         "automated_storage_top.png",
@@ -57,14 +57,14 @@ minetest.register_node("automated_chest:chest", {
     sounds = mcl_sounds.node_sound_wood_defaults(),
 
     on_construct = function(pos)
-        local meta = minetest.get_meta(pos)
+        local meta = core.get_meta(pos)
         local inv = meta:get_inventory()
         inv:set_size("main", 1000)      -- 1000 slots
         meta:set_string("formspec", "") -- Clear formspec to force manual show
     end,
 
     can_dig = function(pos, player)
-        local meta = minetest.get_meta(pos)
+        local meta = core.get_meta(pos)
         local inv = meta:get_inventory()
         return inv:is_empty("main")
     end,
@@ -75,7 +75,7 @@ minetest.register_node("automated_chest:chest", {
 })
 
 -- Automated Crafting Chest (Storage + Crafting)
-minetest.register_node("automated_chest:chest_crafting", {
+core.register_node("automated_chest:chest_crafting", {
     description = S("Automated Crafting Chest"),
     tiles = {
         "automated_storage_craft_top.png",
@@ -90,7 +90,7 @@ minetest.register_node("automated_chest:chest_crafting", {
     sounds = mcl_sounds.node_sound_wood_defaults(),
 
     on_construct = function(pos)
-        local meta = minetest.get_meta(pos)
+        local meta = core.get_meta(pos)
         local inv = meta:get_inventory()
         inv:set_size("main", 1000)      -- 1000 slots
         inv:set_size("craft", 9)        -- 3x3 crafting grid
@@ -99,7 +99,7 @@ minetest.register_node("automated_chest:chest_crafting", {
     end,
 
     can_dig = function(pos, player)
-        local meta = minetest.get_meta(pos)
+        local meta = core.get_meta(pos)
         local inv = meta:get_inventory()
         return inv:is_empty("main") and inv:is_empty("craft") and inv:is_empty("craftresult")
     end,
@@ -144,13 +144,13 @@ minetest.register_node("automated_chest:chest_crafting", {
     end,
 })
 
-minetest.register_lbm({
+core.register_lbm({
     label = "Upgrade automated chests to 1000 slots",
     name = "automated_chest:upgrade_v6",
     nodenames = { "automated_chest:chest", "automated_chest:chest_crafting" },
     run_at_every_load = true,
     action = function(pos, node)
-        local meta = minetest.get_meta(pos)
+        local meta = core.get_meta(pos)
         local inv = meta:get_inventory()
         if inv:get_size("main") ~= 1000 then
             inv:set_size("main", 1000)
