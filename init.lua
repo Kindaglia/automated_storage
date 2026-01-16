@@ -5,14 +5,14 @@
 -- Define global mod namespace
 automated_chest = {}
 
-local mod_path = minetest.get_modpath("automated_chest")
+local mod_path = core.get_modpath("automated_chest")
 
 local function load_file(filename)
     local f = loadfile(mod_path .. "/" .. filename)
     if f then
         f()
     else
-        minetest.log("error", "[automated_chest] Failed to load " .. filename)
+        core.log("error", "[automated_chest] Failed to load " .. filename)
     end
 end
 
@@ -22,4 +22,4 @@ load_file("gui.lua")       -- Formspec and UI handling
 load_file("nodes.lua")     -- Node definitions
 load_file("crafting.lua")  -- Crafting recipes
 
-minetest.log("action", "[automated_chest] Mod loaded successfully")
+core.log("action", "[automated_chest] Mod loaded successfully")

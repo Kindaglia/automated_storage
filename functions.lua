@@ -1,4 +1,4 @@
-local S = minetest.get_translator("automated_chest")
+local S = core.get_translator("automated_chest")
 
 -- Global state for player search queries
 automated_chest.player_search_state = {}
@@ -15,7 +15,7 @@ function automated_chest.get_filtered_items(inv, query)
             local name = stack:get_name()
 
             -- Clean description (remove color codes)
-            desc = minetest.strip_colors(desc)
+            desc = core.strip_colors(desc)
 
             if string.find(string.lower(desc), query_lower, 1, true) or
                 string.find(string.lower(name), query_lower, 1, true) then
@@ -29,18 +29,18 @@ end
 -- Initialize detached inventory for a player
 function automated_chest.init_player_detached_inv(player_name)
     local inv_name = "automated_chest_filter_" .. player_name
-    if minetest.get_inventory({ type = "detached", name = inv_name }) then
+    if core.get_inventory({ type = "detached", name = inv_name }) then
         return -- Already exists
     end
 
-    minetest.create_detached_inventory(inv_name, {
+    core.create_detached_inventory(inv_name, {
         allow_move = function(inv, from_list, from_index, to_list, to_index, count, player)
             return 0 -- Disable moving within filtered view to keep things simple
         end,
         allow_put = function(inv, listname, index, stack, player)
             local pos = automated_chest.player_search_state[player:get_player_name()].pos
             if not pos then return 0 end
-            local node_meta = minetest.get_meta(pos)
+            local node_meta = core.get_meta(pos)
             local node_inv = node_meta:get_inventory()
 
             if node_inv:room_for_item("main", stack) then
@@ -55,7 +55,7 @@ function automated_chest.init_player_detached_inv(player_name)
             local state = automated_chest.player_search_state[player:get_player_name()]
             if not state or not state.pos then return end
 
-            local node_meta = minetest.get_meta(state.pos)
+            local node_meta = core.get_meta(state.pos)
             local node_inv = node_meta:get_inventory()
 
             -- Add to real inventory
@@ -63,7 +63,7 @@ function automated_chest.init_player_detached_inv(player_name)
 
             -- If for some reason it failed (race condition), give back to player
             if not leftover:is_empty() then
-                minetest.add_item(player:get_pos(), leftover)
+                core.add_item(player:get_pos(), leftover)
             end
 
             -- Refresh view
@@ -75,7 +75,7 @@ function automated_chest.init_player_detached_inv(player_name)
             local state = automated_chest.player_search_state[player:get_player_name()]
             if not state or not state.pos then return end
 
-            local node_meta = minetest.get_meta(state.pos)
+            local node_meta = core.get_meta(state.pos)
             local node_inv = node_meta:get_inventory()
 
             -- Remove from real inventory
@@ -94,14 +94,14 @@ end
 function automated_chest.update_filtered_view(player, pos, query)
     local player_name = player:get_player_name()
     local inv_name = "automated_chest_filter_" .. player_name
-    local detached_inv = minetest.get_inventory({ type = "detached", name = inv_name })
+    local detached_inv = core.get_inventory({ type = "detached", name = inv_name })
 
     if not detached_inv then
         automated_chest.init_player_detached_inv(player_name)
-        detached_inv = minetest.get_inventory({ type = "detached", name = inv_name })
+        detached_inv = core.get_inventory({ type = "detached", name = inv_name })
     end
 
-    local node_meta = minetest.get_meta(pos)
+    local node_meta = core.get_meta(pos)
     local node_inv = node_meta:get_inventory()
 
     local items = automated_chest.get_filtered_items(node_inv, query)
@@ -114,17 +114,17 @@ function automated_chest.update_filtered_view(player, pos, query)
     return size
 end
 
-minetest.register_on_joinplayer(function(player)
+core.register_on_joinplayer(function(player)
     automated_chest.init_player_detached_inv(player:get_player_name())
 end)
 
-minetest.register_on_leaveplayer(function(player)
+core.register_on_leaveplayer(function(player)
     automated_chest.player_search_state[player:get_player_name()] = nil
 end)
 
 -- Sort the inventory
 function automated_chest.sort_inventory(pos)
-    local meta = minetest.get_meta(pos)
+    local meta = core.get_meta(pos)
     local inv = meta:get_inventory()
     local size = inv:get_size("main")
     local items = {}
@@ -155,7 +155,7 @@ function automated_chest.sort_inventory(pos)
             if consolidated[name]:get_free_space() > 0 then
                 -- This is a simple merge. A more robust one might be needed for intricate metadata.
                 -- For now, let's just use a temporary inventory to stack everything cleanly.
-                local temp_inv = minetest.create_detached_inventory("temp_sorter", {
+                local temp_inv = core.create_detached_inventory("temp_sorter", {
                     allow_move = function() return 0 end,
                     allow_put = function() return 0 end,
                     allow_take = function() return 0 end,
